@@ -1,4 +1,4 @@
-package tdas;
+    package tdas;
 
 public interface List<E> {
     
@@ -15,4 +15,5 @@ public interface List<E> {
     // inserta todos los elementos recibidos al final de lista
     public boolean addAll (List<E> l);
     
+    public E get(int index);
 }
