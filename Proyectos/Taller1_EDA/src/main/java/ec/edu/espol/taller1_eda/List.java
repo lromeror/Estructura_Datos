@@ -1,6 +1,7 @@
 package ec.edu.espol.taller1_eda;
 
-public interface List<E> {
+public interface List<E> {//Esto es una parametrizacion que funcione con cualquier tipo de datos
+    //Esto es muy bueno par ano hacer downcasting
 
     public int size();
 
