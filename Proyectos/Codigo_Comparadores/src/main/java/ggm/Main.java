@@ -75,17 +75,24 @@ public class Main {
 //        System.out.println("intersection2.size(): " + intersection2.size());
 //
 //        System.out.println(intersection2);
-        Stack<Integer> stack = new Stack<>();
-
-        // Llenar la pila con 5 números
-        stack.push(10); // Agregar el número 10 a la pila
-        stack.push(20); // Agregar el número 20 a la pila
-        stack.push(30); // Agregar el número 30 a la pila
-        stack.push(40); // Agregar el número 40 a la pila
-        stack.push(50); // Agregar el número 50 a la pila
-        Stack<Integer> stack2 = new Stack<>();
-         System.out.println("Elementos en la pila: " + stack);
-        PracticaPilas.stackCopyto(stack, stack2);
-
+//        Stack<Integer> stack = new Stack<>();
+//
+//        // Llenar la pila con 5 números
+//        stack.push(10); // Agregar el número 10 a la pila
+//        stack.push(20); // Agregar el número 20 a la pila
+//        stack.push(30); // Agregar el número 30 a la pila
+//        stack.push(40); // Agregar el número 40 a la pila
+//        stack.push(50); // Agregar el número 50 a la pila
+//        Stack<Integer> stack2 = new Stack<>();
+//         System.out.println("Elementos en la pila: " + stack);
+//        PracticaPilas.stackCopyto(stack, stack2);
+        LinkedList<Integer> list=new LinkedList<>();
+        list.addLast(1);
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.addLast(5);
+        list.addLast(6);
+        System.out.println(list);
     }
 }
