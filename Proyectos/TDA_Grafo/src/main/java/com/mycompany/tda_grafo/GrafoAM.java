@@ -47,7 +47,7 @@ public class GrafoAM<V> {
     public boolean toConnect(V v1, V v2) {
         int index1 = findIndexVertex(v1);
         int index2 = findIndexVertex(v2);
-        int actuMatr=0;
+        int actuMatr;
         if (index1 == -1 || index2 == -1) {
             return false;
         }
@@ -69,7 +69,7 @@ public class GrafoAM<V> {
                 || (index1 == index2)) {
             actuMatr = this.matrizAdyancencia[index1][index2] + 2;
         } else {
-             actuMatr = this.matrizAdyancencia[index1][index2] + 1;
+            actuMatr = this.matrizAdyancencia[index1][index2] + 1;
         }
         this.matrizAdyancencia[index1][index2] = actuMatr;
         this.matrizAdyancencia[index2][index1] = actuMatr;
