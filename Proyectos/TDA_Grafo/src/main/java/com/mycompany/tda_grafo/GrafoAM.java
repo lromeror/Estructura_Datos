@@ -78,13 +78,10 @@ public class GrafoAM<V> {
         if (content == null) {
             return false;
         }
-        if (this.isEmpty()) {
-            this.vertices[this.effectiveSize] = content;
-            this.effectiveSize++;
-            return true;
-        }
-        if (this.findIndexVertex(content) != -1) {
-            return false;
+        if (!this.isEmpty()) {
+            if (this.findIndexVertex(content) != -1) {
+                return false;
+            }
         }
         if (this.isFull()) {
             this.addCapacity();
@@ -118,7 +115,7 @@ public class GrafoAM<V> {
             for (int j = 0; j < this.effectiveSize; j++) {
                 System.out.print(this.matrizAdyancencia[i][j] + " ");
             }
-            System.out.println(); // Saltar a la siguiente línea para la siguiente fila
+            System.out.println();
         }
     }
 
