@@ -47,6 +47,7 @@ public class GrafoAM<V> {
     public boolean toConnect(V v1, V v2) {
         int index1 = findIndexVertex(v1);
         int index2 = findIndexVertex(v2);
+        int actuMatr=0;
         if (index1 == -1 || index2 == -1) {
             return false;
         }
@@ -63,19 +64,15 @@ public class GrafoAM<V> {
 
         if ((this.matrizAdyancencia[index1][index2] == -1 && this.matrizAdyancencia[index2][index1] == -1
                 && index1 == index2)) {
-            int actuMatr = this.matrizAdyancencia[index1][index2] + 3;
-            this.matrizAdyancencia[index1][index2] = actuMatr;
-            this.matrizAdyancencia[index2][index1] = actuMatr;
+            actuMatr = this.matrizAdyancencia[index1][index2] + 3;
         } else if ((this.matrizAdyancencia[index1][index2] == -1 && this.matrizAdyancencia[index2][index1] == -1)
                 || (index1 == index2)) {
-            int actuMatr = this.matrizAdyancencia[index1][index2] + 2;
-            this.matrizAdyancencia[index1][index2] = actuMatr;
-            this.matrizAdyancencia[index2][index1] = actuMatr;
+            actuMatr = this.matrizAdyancencia[index1][index2] + 2;
         } else {
-            int actuMatr = this.matrizAdyancencia[index1][index2] + 1;
-            this.matrizAdyancencia[index1][index2] = actuMatr;
-            this.matrizAdyancencia[index2][index1] = actuMatr;
+             actuMatr = this.matrizAdyancencia[index1][index2] + 1;
         }
+        this.matrizAdyancencia[index1][index2] = actuMatr;
+        this.matrizAdyancencia[index2][index1] = actuMatr;
         return true;
     }
 
