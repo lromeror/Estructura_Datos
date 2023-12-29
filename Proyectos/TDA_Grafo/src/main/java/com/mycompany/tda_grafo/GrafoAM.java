@@ -8,7 +8,8 @@ import java.util.Comparator;
 
 /**
  *
- * @author Luis Romero; Implementacion estatica de grafo con Matriz de adyacencia
+ * @author Luis Romero; Implementacion estatica de grafo con Matriz de
+ * adyacencia
  * @param <V>
  */
 public class GrafoAM<V> {
@@ -31,22 +32,31 @@ public class GrafoAM<V> {
         this.vertices = (V[]) new Object[capacity];
         this.matrizAdyancencia = new int[capacity][capacity];//comprado memoria para la matriz
         this.isDirect = isDirect;
-        this.inicializarMatrix();
+        inicializarMatrix();
         this.cmp = cmp;
     }
 
     private void inicializarMatrix() {
-        for (int i = 0; matrizAdyancencia.length < 10; i++) {
-            for (int j = 0; matrizAdyancencia.length < 10; j++) {
+        for (int i = 0; i < capacity; i++) {
+            for (int j = 0; j < capacity; j++) {
                 this.matrizAdyancencia[i][j] = -1;
             }
         }
     }
 
-    public boolean connect(V v1, V v2) {
+    public boolean toConnect(V v1, V v2) {
         int index1 = findIndexVertex(v1);
         int index2 = findIndexVertex(v2);
-        return false;
+
+        if (index1 == -1 || index2 == -1) {
+            return false;
+        }
+
+        //Aqui podemos asumir que no hay lazos entre grafos
+        this.matrizAdyancencia[index1][index2] = 1;
+        this.matrizAdyancencia[index2][index1] = 1;
+
+        return true;
     }
 
     private boolean isFull() {
@@ -64,11 +74,16 @@ public class GrafoAM<V> {
         this.vertices = newVertex;
     }
 
-    private boolean addVertex(V content) {
+    public boolean addVertex(V content) {
         if (content == null) {
             return false;
         }
-        if (this.findIndexVertex(content) == -1) {
+        if (this.isEmpty()) {
+            this.vertices[this.effectiveSize] = content;
+            this.effectiveSize++;
+            return true;
+        }
+        if (this.findIndexVertex(content) != -1) {
             return false;
         }
         if (this.isFull()) {
@@ -80,7 +95,7 @@ public class GrafoAM<V> {
     }
 
     private int findIndexVertex(V v) {
-        for (int i = 0; this.vertices.length < 10; i++) {
+        for (int i = 0; i < this.effectiveSize; i++) {
             if (this.cmp.compare(v, this.vertices[i]) == 0) {
                 return i;
             }
@@ -96,5 +111,18 @@ public class GrafoAM<V> {
             }
         }
         return newMatriz;
+    }
+
+    public void showMatrix() {
+        for (int i = 0; i < this.effectiveSize; i++) {
+            for (int j = 0; j < this.effectiveSize; j++) {
+                System.out.print(this.matrizAdyancencia[i][j] + " ");
+            }
+            System.out.println(); // Saltar a la siguiente línea para la siguiente fila
+        }
+    }
+
+    private boolean isEmpty() {
+        return this.effectiveSize == 0;
     }
 }

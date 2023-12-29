@@ -4,6 +4,8 @@
 
 package com.mycompany.tda_grafo;
 
+import java.util.Comparator;
+
 /**
  *
  * @author Luis Romero
@@ -11,6 +13,15 @@ package com.mycompany.tda_grafo;
 public class TDA_Grafo {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Comparator<String> cmp=(String o1, String o2) -> o1.compareTo(o2);
+        
+        GrafoAM<String> grafo=new GrafoAM<>(false,cmp);
+        System.out.println(grafo.addVertex("A"));
+        System.out.println(grafo.addVertex("B"));
+        System.out.println(grafo.addVertex("C"));
+        grafo.toConnect("A", "B");
+        grafo.toConnect("A", "C");
+        
+        grafo.showMatrix();
     }
 }
