@@ -4,33 +4,34 @@
  */
 package com.mycompany.tda_grafo;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
  *
  * @author Luis Romero; Implementacion estatica de grafo con Matriz de
- * adyacencia
+ *         adyacencia
  * @param <V>
  */
 public class GrafoAM<V> {
 
-    private V[] vertices;//un arreglo que representa a los vertices
+    private V[] vertices;// un arreglo que representa a los vertices
     private int[][] matrizAdyancencia;
     private boolean isDirect;
     private int effectiveSize;
     private int capacity = 100;
     private Comparator<V> cmp;
 
-    public GrafoAM() {//Aqui se invoca para que se llene la matriz por defecto 
+    public GrafoAM() {// Aqui se invoca para que se llene la matriz por defecto
         this.vertices = (V[]) new Object[capacity];
-        this.matrizAdyancencia = new int[capacity][capacity];//comprado memoria para la matriz
+        this.matrizAdyancencia = new int[capacity][capacity];// comprado memoria para la matriz
         this.isDirect = true;
         this.inicializarMatrix();
     }
 
     public GrafoAM(boolean isDirect, Comparator cmp) {
         this.vertices = (V[]) new Object[capacity];
-        this.matrizAdyancencia = new int[capacity][capacity];//comprado memoria para la matriz
+        this.matrizAdyancencia = new int[capacity][capacity];// comprado memoria para la matriz
         this.isDirect = isDirect;
         inicializarMatrix();
         this.cmp = cmp;
@@ -43,18 +44,34 @@ public class GrafoAM<V> {
             }
         }
     }
-    
-    private int acumulador=0;
+
     public boolean toConnect(V v1, V v2) {
         int index1 = findIndexVertex(v1);
         int index2 = findIndexVertex(v2);
+
         if (index1 == -1 || index2 == -1) {
             return false;
         }
-        //Aqui podemos asumir que no hay lazos entre grafos
-        this.matrizAdyancencia[index1][index2] = acumulador;
-        this.matrizAdyancencia[index2][index1] = acumulador;
-        acumulador++;
+
+        if (this.isDirect == true) {// Aqui cuando es dirigido el orden no es conmutativo es decir el orden que
+                                    // pones los vertices es importante, v1 a v2
+            if (this.matrizAdyancencia[index1][index2] == -1) {
+                this.matrizAdyancencia[index1][index2] += 2;
+            } else {
+                this.matrizAdyancencia[index1][index2]++;
+            }
+
+            return true;
+        }
+
+        // Aqui podemos asumimos que no hay lazos entre grafos
+        if (this.matrizAdyancencia[index1][index2] == -1 && this.matrizAdyancencia[index2][index1] == -1) {
+            this.matrizAdyancencia[index1][index2] += 2;
+            this.matrizAdyancencia[index2][index1] += 2;
+        } else {
+            this.matrizAdyancencia[index1][index2]++;
+            this.matrizAdyancencia[index2][index1]++;
+        }
         return true;
     }
 
