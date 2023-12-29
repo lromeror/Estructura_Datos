@@ -24,7 +24,8 @@ public class TDA_Grafo {
         grafo.toConnect("A", "B");
         grafo.toConnect("A", "C");
         grafo.toConnect("A", "B");
-        grafo.toConnect("A", "C");
+        grafo.toConnect("B", "B");
+        grafo.toConnect("C", "B");
         
         grafo.showMatrix();
         System.out.println();
@@ -37,8 +38,8 @@ public class TDA_Grafo {
 
         grafoDi.toConnect("A", "B");
         grafoDi.toConnect("A", "C");
-        grafoDi.toConnect("C", "A");
-
+        grafoDi.toConnect("A", "A");
+        
         grafoDi.showMatrix();
     }
 }

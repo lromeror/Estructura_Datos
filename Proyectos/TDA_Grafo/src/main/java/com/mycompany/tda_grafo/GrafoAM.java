@@ -4,13 +4,11 @@
  */
 package com.mycompany.tda_grafo;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
  *
- * @author Luis Romero; Implementacion estatica de grafo con Matriz de
- *         adyacencia
+ * @author Luis Romero Implementacion estatica de grafo con Matriz de adyacencia
  * @param <V>
  */
 public class GrafoAM<V> {
@@ -45,32 +43,38 @@ public class GrafoAM<V> {
         }
     }
 
+    // Esta validado para un grafo que tenga lazo
     public boolean toConnect(V v1, V v2) {
         int index1 = findIndexVertex(v1);
         int index2 = findIndexVertex(v2);
-
         if (index1 == -1 || index2 == -1) {
             return false;
         }
 
         if (this.isDirect == true) {// Aqui cuando es dirigido el orden no es conmutativo es decir el orden que
-                                    // pones los vertices es importante, v1 a v2
+            // pones los vertices es importante, v1 a v2
             if (this.matrizAdyancencia[index1][index2] == -1) {
                 this.matrizAdyancencia[index1][index2] += 2;
             } else {
                 this.matrizAdyancencia[index1][index2]++;
             }
-
             return true;
         }
 
-        // Aqui podemos asumimos que no hay lazos entre grafos
-        if (this.matrizAdyancencia[index1][index2] == -1 && this.matrizAdyancencia[index2][index1] == -1) {
-            this.matrizAdyancencia[index1][index2] += 2;
-            this.matrizAdyancencia[index2][index1] += 2;
+        if ((this.matrizAdyancencia[index1][index2] == -1 && this.matrizAdyancencia[index2][index1] == -1
+                && index1 == index2)) {
+            int actuMatr = this.matrizAdyancencia[index1][index2] + 3;
+            this.matrizAdyancencia[index1][index2] = actuMatr;
+            this.matrizAdyancencia[index2][index1] = actuMatr;
+        } else if ((this.matrizAdyancencia[index1][index2] == -1 && this.matrizAdyancencia[index2][index1] == -1)
+                || (index1 == index2)) {
+            int actuMatr = this.matrizAdyancencia[index1][index2] + 2;
+            this.matrizAdyancencia[index1][index2] = actuMatr;
+            this.matrizAdyancencia[index2][index1] = actuMatr;
         } else {
-            this.matrizAdyancencia[index1][index2]++;
-            this.matrizAdyancencia[index2][index1]++;
+            int actuMatr = this.matrizAdyancencia[index1][index2] + 1;
+            this.matrizAdyancencia[index1][index2] = actuMatr;
+            this.matrizAdyancencia[index2][index1] = actuMatr;
         }
         return true;
     }
