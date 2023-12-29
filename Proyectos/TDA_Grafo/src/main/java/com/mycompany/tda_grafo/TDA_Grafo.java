@@ -16,11 +16,14 @@ public class TDA_Grafo {
         Comparator<String> cmp=(String o1, String o2) -> o1.compareTo(o2);
         
         GrafoAM<String> grafo=new GrafoAM<>(false,cmp);
-        System.out.println(grafo.addVertex("A"));
-        System.out.println(grafo.addVertex("B"));
-        System.out.println(grafo.addVertex("C"));
+        grafo.addVertex("A");
+        grafo.addVertex("B");
+        grafo.addVertex("C");
+        
         grafo.toConnect("A", "B");
         grafo.toConnect("A", "C");
+        grafo.toConnect("A", "B");
+        grafo.toConnect("A", "B");
         
         grafo.showMatrix();
     }

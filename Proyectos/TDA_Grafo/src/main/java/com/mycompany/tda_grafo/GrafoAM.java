@@ -43,19 +43,18 @@ public class GrafoAM<V> {
             }
         }
     }
-
+    
+    private int acumulador=0;
     public boolean toConnect(V v1, V v2) {
         int index1 = findIndexVertex(v1);
         int index2 = findIndexVertex(v2);
-
         if (index1 == -1 || index2 == -1) {
             return false;
         }
-
         //Aqui podemos asumir que no hay lazos entre grafos
-        this.matrizAdyancencia[index1][index2] = 1;
-        this.matrizAdyancencia[index2][index1] = 1;
-
+        this.matrizAdyancencia[index1][index2] = acumulador;
+        this.matrizAdyancencia[index2][index1] = acumulador;
+        acumulador++;
         return true;
     }
 
