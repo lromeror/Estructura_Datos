@@ -20,7 +20,7 @@ public class TDA_Grafo {
         grafo.addVertex("B");
         grafo.addVertex("C");
 
-        grafo.toConnect("A", "B");
+        //grafo.toConnect("A", "A",10);
         grafo.toConnect("A", "C");
         grafo.toConnect("A", "B");
         grafo.toConnect("B", "B");
@@ -37,7 +37,7 @@ public class TDA_Grafo {
         grafoDi.addVertex("B");
         grafoDi.addVertex("C");
 
-        grafoDi.toConnect("A", "B");
+        //grafoDi.toConnect("A", "B",10);
         grafoDi.toConnect("A", "C");
         grafoDi.toConnect("A", "A");
         

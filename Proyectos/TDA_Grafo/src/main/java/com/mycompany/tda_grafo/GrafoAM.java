@@ -179,4 +179,20 @@ public class GrafoAM<V> {
         this.matrizAdyancencia = newMatrix;
     }
 
+    public boolean toConnect(V v1, V v2, int peso) {
+        int index1 = findIndexVertex(v1);
+        int index2 = findIndexVertex(v2);
+        if (index1 == -1 || index2 == -1) {
+            return false;
+        }
+        if (this.isDirect) {// Aqui cuando es dirigido el orden no es conmutativo es decir el orden que
+            // pones los vertices es importante, v1 a v2
+            this.matrizAdyancencia[index1][index2] = peso;
+            return true;
+        }
+        this.matrizAdyancencia[index1][index2] = peso;
+        this.matrizAdyancencia[index2][index1] = peso;
+        return true;
+    }
+
 }
