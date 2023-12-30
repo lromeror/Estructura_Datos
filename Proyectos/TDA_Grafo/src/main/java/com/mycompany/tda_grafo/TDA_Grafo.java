@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.tda_grafo;
 
 import java.util.Comparator;
@@ -13,25 +12,27 @@ import java.util.Comparator;
 public class TDA_Grafo {
 
     public static void main(String[] args) {
-        Comparator<String> cmp=(String o1, String o2) -> o1.compareTo(o2);
-        
+        Comparator<String> cmp = (String o1, String o2) -> o1.compareTo(o2);
+
         //Grafo no dirigido
-        GrafoAM<String> grafo=new GrafoAM<>(false,cmp);
+        GrafoAM<String> grafo = new GrafoAM<>(false, cmp);
         grafo.addVertex("A");
         grafo.addVertex("B");
         grafo.addVertex("C");
-        
+
         grafo.toConnect("A", "B");
         grafo.toConnect("A", "C");
         grafo.toConnect("A", "B");
         grafo.toConnect("B", "B");
         grafo.toConnect("C", "B");
-        
+
+        grafo.removeVertex("C");
         grafo.showMatrix();
+
         System.out.println();
-        
+
         //Grafo dirigido
-        GrafoAM<String> grafoDi=new GrafoAM<>(true,cmp);
+        GrafoAM<String> grafoDi = new GrafoAM<>(true, cmp);
         grafoDi.addVertex("A");
         grafoDi.addVertex("B");
         grafoDi.addVertex("C");
@@ -40,6 +41,7 @@ public class TDA_Grafo {
         grafoDi.toConnect("A", "C");
         grafoDi.toConnect("A", "A");
         
+        grafoDi.removeVertex("B");
         grafoDi.showMatrix();
     }
 }

@@ -24,21 +24,21 @@ public class GrafoAM<V> {
         this.vertices = (V[]) new Object[capacity];
         this.matrizAdyancencia = new int[capacity][capacity];// comprado memoria para la matriz
         this.isDirect = true;
-        this.inicializarMatrix();
+        this.inicializarMatrix(matrizAdyancencia);
     }
 
     public GrafoAM(boolean isDirect, Comparator cmp) {
         this.vertices = (V[]) new Object[capacity];
         this.matrizAdyancencia = new int[capacity][capacity];// comprado memoria para la matriz
         this.isDirect = isDirect;
-        inicializarMatrix();
+        inicializarMatrix(matrizAdyancencia);
         this.cmp = cmp;
     }
 
-    private void inicializarMatrix() {
+    private void inicializarMatrix(int[][] matrix) {
         for (int i = 0; i < capacity; i++) {
             for (int j = 0; j < capacity; j++) {
-                this.matrizAdyancencia[i][j] = -1;
+                matrix[i][j] = -1;
             }
         }
     }
@@ -106,9 +106,9 @@ public class GrafoAM<V> {
         return true;
     }
 
-    private int findIndexVertex(V v) {
+    private int findIndexVertex(V vertice) {
         for (int i = 0; i < this.effectiveSize; i++) {
-            if (this.cmp.compare(v, this.vertices[i]) == 0) {
+            if (this.cmp.compare(vertice, this.vertices[i]) == 0) {
                 return i;
             }
         }
@@ -137,4 +137,46 @@ public class GrafoAM<V> {
     private boolean isEmpty() {
         return this.effectiveSize == 0;
     }
+
+    public V removeVertex(V vertice) {
+        int cont = 0;
+        V[] newVert = (V[]) new Object[capacity];
+        if (vertice == null || this.isEmpty()) {
+            return null;
+        }
+        int posVer = this.findIndexVertex(vertice);
+        if (posVer == -1) {
+            return null;
+        }
+        V verticeRemove = this.vertices[posVer];
+        for (int i = 0; i < this.effectiveSize; i++) {
+            if (i != posVer) {
+                newVert[cont++] = this.vertices[i];
+            }
+        }
+        updateMatrix(posVer);
+        this.vertices = newVert;
+        this.effectiveSize--;
+        return verticeRemove;
+    }
+
+    private void updateMatrix(int posEle) {
+        int[][] newMatrix = new int[capacity][capacity];
+        inicializarMatrix(newMatrix);
+        int newFil = 0;
+        for (int i = 0; i < this.effectiveSize; i++) {
+            if (i != posEle) {
+                int newCol = 0;
+                for (int j = 0; j < this.effectiveSize; j++) {
+                    if (j != posEle) {
+                        newMatrix[newFil][newCol] = this.matrizAdyancencia[i][j];
+                        newCol++;
+                    }
+                }
+                newFil++;
+            }
+        }
+        this.matrizAdyancencia = newMatrix;
+    }
+
 }
