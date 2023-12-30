@@ -51,7 +51,6 @@ public class GrafoAM<V> {
         if (index1 == -1 || index2 == -1) {
             return false;
         }
-
         if (this.isDirect == true) {// Aqui cuando es dirigido el orden no es conmutativo es decir el orden que
             // pones los vertices es importante, v1 a v2
             if (this.matrizAdyancencia[index1][index2] == -1) {
@@ -61,7 +60,6 @@ public class GrafoAM<V> {
             }
             return true;
         }
-
         if ((this.matrizAdyancencia[index1][index2] == -1 && this.matrizAdyancencia[index2][index1] == -1
                 && index1 == index2)) {
             actuMatr = this.matrizAdyancencia[index1][index2] + 3;
