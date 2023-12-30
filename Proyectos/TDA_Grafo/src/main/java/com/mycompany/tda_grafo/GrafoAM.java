@@ -15,7 +15,8 @@ public class GrafoAM<V> {
 
     private V[] vertices;// un arreglo que representa a los vertices
     private int[][] matrizAdyancencia;
-    private boolean isDirect;
+    private boolean isDirect=false;
+    //private E[][] dataArco;// Esto es para que en los arcos no solo haiga los pesos sino informacion de tipo E
     private int effectiveSize;
     private int capacity = 100;
     private Comparator<V> cmp;
