@@ -10,13 +10,14 @@ import java.util.Comparator;
  *
  * @author Luis Romero Implementacion estatica de grafo con Matriz de adyacencia
  * @param <V>
+ * @param <E>
  */
-public class GrafoAM<V> {
+public class GrafoAM<V, E> {
 
     private V[] vertices;// un arreglo que representa a los vertices
     private int[][] matrizAdyancencia;
-    private boolean isDirect=false;
-    //private E[][] dataArco;// Esto es para que en los arcos no solo haiga los pesos sino informacion de tipo E
+    private boolean isDirect;
+    private E[][] metadataMatrix;// Esto es para que en los arcos no solo haiga los pesos sino informacion de tipo E
     private int effectiveSize;
     private int capacity = 100;
     private Comparator<V> cmp;
@@ -25,21 +26,24 @@ public class GrafoAM<V> {
         this.vertices = (V[]) new Object[capacity];
         this.matrizAdyancencia = new int[capacity][capacity];// comprado memoria para la matriz
         this.isDirect = true;
-        this.inicializarMatrix(matrizAdyancencia);
+        this.metadataMatrix = (E[][]) new Object[capacity][capacity];
+        this.inicializarMatrix(matrizAdyancencia, metadataMatrix);
     }
 
     public GrafoAM(boolean isDirect, Comparator cmp) {
         this.vertices = (V[]) new Object[capacity];
         this.matrizAdyancencia = new int[capacity][capacity];// comprado memoria para la matriz
         this.isDirect = isDirect;
-        inicializarMatrix(matrizAdyancencia);
+        this.metadataMatrix = (E[][]) new Object[capacity][capacity];
+        inicializarMatrix(matrizAdyancencia, metadataMatrix);
         this.cmp = cmp;
     }
 
-    private void inicializarMatrix(int[][] matrix) {
+    private void inicializarMatrix(int[][] matrix, E[][] matrix2) {
         for (int i = 0; i < capacity; i++) {
             for (int j = 0; j < capacity; j++) {
                 matrix[i][j] = -1;
+                matrix2[i][j] = null;
             }
         }
     }
@@ -118,15 +122,17 @@ public class GrafoAM<V> {
 
     private int[][] copyMatrix() {
         int[][] newMatriz = new int[this.capacity][this.capacity];
+        E[][] matrixMe = (E[][]) new Object[capacity][capacity];
         for (int i = 0; i < this.effectiveSize; i++) {
             for (int j = 0; j < this.effectiveSize; j++) {
                 newMatriz[i][j] = this.matrizAdyancencia[i][j];
+                matrixMe[i][j] = this.metadataMatrix[i][j];
             }
         }
         return newMatriz;
     }
 
-    public void showMatrix() {
+    public void showMatrixAd() {
         for (int i = 0; i < this.effectiveSize; i++) {
             for (int j = 0; j < this.effectiveSize; j++) {
                 System.out.print(this.matrizAdyancencia[i][j] + " ");
@@ -163,7 +169,8 @@ public class GrafoAM<V> {
 
     private void updateMatrix(int posEle) {
         int[][] newMatrix = new int[capacity][capacity];
-        inicializarMatrix(newMatrix);
+        E[][] matrixMe = (E[][]) new Object[capacity][capacity];
+        inicializarMatrix(newMatrix, matrixMe);
         int newFil = 0;
         for (int i = 0; i < this.effectiveSize; i++) {
             if (i != posEle) {
@@ -171,6 +178,7 @@ public class GrafoAM<V> {
                 for (int j = 0; j < this.effectiveSize; j++) {
                     if (j != posEle) {
                         newMatrix[newFil][newCol] = this.matrizAdyancencia[i][j];
+                        matrixMe[newFil][newCol] = this.metadataMatrix[i][j];
                         newCol++;
                     }
                 }
@@ -196,4 +204,30 @@ public class GrafoAM<V> {
         return true;
     }
 
+    public boolean toConectMet(V source, V target, int w, E metadata) {
+        if (source == null || target == null) {
+            return false;
+        }
+        int i1 = findIndexVertex(source);
+        int i2 = findIndexVertex(target);
+        if (i1 == -1 || i2 == -1) {
+            return false;
+        }
+        this.matrizAdyancencia[i1][i2] = w;
+        this.metadataMatrix[i1][i2] = metadata;
+        if (!this.isDirect) {
+            this.matrizAdyancencia[i2][i1] = w;
+            this.metadataMatrix[i2][i1] = metadata;
+        }
+        return true;
+    }
+
+    public void showMatrixMe() {
+        for (int i = 0; i < this.effectiveSize; i++) {
+            for (int j = 0; j < this.effectiveSize; j++) {
+                System.out.print(this.metadataMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 }

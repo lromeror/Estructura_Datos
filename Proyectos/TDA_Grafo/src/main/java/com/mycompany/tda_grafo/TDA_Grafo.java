@@ -15,24 +15,25 @@ public class TDA_Grafo {
         Comparator<String> cmp = (String o1, String o2) -> o1.compareTo(o2);
 
         //Grafo no dirigido
-        GrafoAM<String> grafo = new GrafoAM<>(false, cmp);
+        GrafoAM<String,String> grafo = new GrafoAM<>(false, cmp);
         grafo.addVertex("A");
         grafo.addVertex("B");
         grafo.addVertex("C");
 
         //grafo.toConnect("A", "A",10);
-        grafo.toConnect("A", "C");
-        grafo.toConnect("A", "B");
-        grafo.toConnect("B", "B");
-        grafo.toConnect("C", "B");
+        grafo.toConectMet("A", "C",10,"Pitusa");
+        grafo.toConectMet("A", "B",20,"Pitbull");
+        grafo.toConectMet("B", "B",30,"Pepe");
+        grafo.toConectMet("C", "B",100,"Toprack");
 
         grafo.removeVertex("C");
-        grafo.showMatrix();
+        grafo.showMatrixAd();
+        grafo.showMatrixMe();
 
         System.out.println();
 
         //Grafo dirigido
-        GrafoAM<String> grafoDi = new GrafoAM<>(true, cmp);
+        GrafoAM<String,Integer> grafoDi = new GrafoAM<>(true, cmp);
         grafoDi.addVertex("A");
         grafoDi.addVertex("B");
         grafoDi.addVertex("C");
@@ -42,6 +43,6 @@ public class TDA_Grafo {
         grafoDi.toConnect("A", "A");
         
         grafoDi.removeVertex("B");
-        grafoDi.showMatrix();
+        grafoDi.showMatrixAd();
     }
 }
