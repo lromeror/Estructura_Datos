@@ -7,6 +7,8 @@ package com.mycompany.tda_grafo;
 /**
  *
  * @author Luis Romero
+ * @param <E>
+ * @param <V>
  */
 public class Edge<E, V> {
 

@@ -14,11 +14,13 @@ import java.util.LinkedList;
  */
 public class Vertex<V,E> {
     private V content;
+    private boolean visited;
     private LinkedList<Edge<E,V>> listEdge;
 
     public Vertex(V content) {
         this.content = content;
-        this.listEdge = new LinkedList<>() ;
+        this.listEdge = new LinkedList<>();
+        this.visited=false;
     }
 
     public V getContent() {
@@ -35,6 +37,18 @@ public class Vertex<V,E> {
 
     public void setListEdge(LinkedList<Edge<E, V>> listEdge) {
         this.listEdge = listEdge;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+    
+    public String toString(){
+        return this.content.toString();
     }
     
 }
