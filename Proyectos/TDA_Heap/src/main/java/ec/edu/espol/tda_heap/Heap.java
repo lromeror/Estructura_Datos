@@ -6,115 +6,195 @@ package ec.edu.espol.tda_heap;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
- * @author Luis Romero
- * @param <E>
+ * @author angelozurita
  */
-public class Heap<E> {
-
-    private E[] elements;
-    private int MAX_SIZE = 100;
+public class Heap<E> implements Iterable<E>{
+    private Comparator<E> comp;
+    private E[] arreglo;
+    private int MAX= 100;
     private int effectiveSize;
-    private final Comparator<E> cmp;
+    private boolean isMax;
 
-    public Heap(Comparator<E> cmp) {
-        this.elements = (E[]) new Object[MAX_SIZE];
+    public Heap(int tmax, boolean isMax) {
+        this.arreglo = (E[]) new Object[tmax];
         this.effectiveSize = 0;
-        this.cmp = cmp;
+        this.isMax = isMax;
     }
 
-    public int getLeft(int posRoot) {
-        int posLeft = 2 * posRoot + 1;
-        if (posRoot > effectiveSize - 1 || posRoot < 0 || posLeft > this.effectiveSize) {
+    public Heap(Comparator<E> comp,E[] arreglo, boolean isMax) {
+        this.comp = comp;
+        this.arreglo = (E[]) new Object[MAX];
+        for(int i = 0 ; i<arreglo.length ; i++){
+            this.arreglo[i] = arreglo[i];
+        }
+        this.effectiveSize = arreglo.length ;
+        this.isMax = isMax;
+    }
+    
+    public Heap(Comparator<E> comp,List<E> arreglo, boolean isMax) {
+        this.comp = comp;
+        this.arreglo = (E[]) new Object[MAX];
+        for(int i = 0 ; i<arreglo.size(); i++){
+            this.arreglo[i] = arreglo.get(i);
+        }
+        this.effectiveSize = arreglo.size();
+        this.isMax = isMax;
+        this.makeHeap();
+    }
+    public int posIzq(int i){
+        int valor = (i*2)+1; 
+        if(valor > effectiveSize || i < 0){
             return -1;
         }
-        return posLeft;
+        else{
+            return valor;
+        }
     }
-
-    public int getRight(int posRoot) {
-        int posRight = 2 * posRoot + 2;
-        if (posRoot > effectiveSize - 1 || posRoot < 0 || posRight > this.effectiveSize) {
+    public int posDer(int i){
+        int valor = (i*2)+2; 
+        if(valor > effectiveSize || i < 0){
             return -1;
         }
-        return posRight;
+        else{
+            return valor;
+        }
     }
-
-    public int getParent(int posRoot) {
-        if (posRoot == 0 || posRoot > effectiveSize - 1 || posRoot < 0) {
+    public int posPadre(int i){
+        int valor = (i-1)/2;
+        if(valor > effectiveSize || i==0){
             return -1;
         }
-        return (posRoot - 1) / 2;
-    }
-
-    public boolean isLeaf(int posRoot) {
-        return this.getLeft(posRoot) < 0 && this.getRight(posRoot) < 0;
-    }
-
-    private boolean isFull() {
-        return effectiveSize == MAX_SIZE;
-    }
-
-    private void addCapacity() {
-        MAX_SIZE = MAX_SIZE * 2;
-        E[] newElements = (E[]) new Object[MAX_SIZE];
-        for (int i = 0; i < effectiveSize; i++) {
-            newElements[i] = elements[i];
+        else{
+            return valor;
         }
-        this.elements = newElements;
     }
-
-    public boolean addFirst(E element) {
-        if (element == null) {
-            return false;
-        }
-        if (isFull()) {
-            addCapacity();
-        }
-        for (int i = this.effectiveSize - 1; i >= 0; i--) {
-            elements[i + 1] = elements[i];
-        }
-
-        this.elements[0] = element;
-        this.effectiveSize++;
-        return true;
+    public boolean isEmpty(){
+        return effectiveSize == 0;
     }
-
-    public void ajustar(int posRoot) {
-        if (posRoot >= 0 && posRoot < effectiveSize - 1 && !this.isLeaf(posRoot)) {
-            E Left = this.elements[this.getLeft(posRoot)];
-            E Right = this.elements[this.getRight(posRoot)];
-            E Root = this.elements[posRoot];
-            if (cmp.compare(Root, Left) < 0) {
-                swap(this.getLeft(posRoot), Root, Left);
-                this.ajustar(this.getLeft(posRoot));
+    
+    // tengo que recibir el indice 
+    public void ajustar(int posnodo){
+        // solo si cumple esta condición se hace el metodo
+        if(posnodo < effectiveSize && posnodo>=0){
+            if(isMax){
+                int posMayor = posnodo;
+                int posIzq = posIzq(posnodo);
+                int posDer = posDer(posnodo);
+                
+                if(posIzq>=0 && posIzq<effectiveSize && comp.compare(arreglo[posIzq],arreglo[posMayor]) > 0){
+                    posMayor = posIzq;
+                }
+                if(posDer>=0 && posDer<effectiveSize && comp.compare(arreglo[posDer],arreglo[posMayor]) > 0){
+                        posMayor = posDer;
+                }
+                
+                if(posMayor != posnodo){
+                   intercambiar(posnodo,posMayor);
+                   ajustar(posMayor);
+                   
+                }
             }
-            if (cmp.compare(Root, Right) < 0) {
-                swap(this.getRight(posRoot), Root, Right);
-                this.ajustar(this.getRight(posRoot));
-            }
+            else{
+                int posMenor = posnodo;
+                int posIzq = posIzq(posnodo);
+                int posDer = posDer(posnodo);
+                
+                if(posIzq>=0 && posIzq<effectiveSize && comp.compare(arreglo[posIzq],arreglo[posMenor]) < 0){
+                    posMenor = posIzq;
+                }
+                if(posDer>=0 && posDer<effectiveSize && comp.compare(arreglo[posDer],arreglo[posMenor]) < 0){
+                    posMenor = posDer;
+                }
+                
+                if(posMenor != posnodo){
+                   intercambiar(posnodo,posMenor);
+                   ajustar(posMenor);
+                }
+             }  
+        }  
+    } 
+    private void intercambiar(int posnodo, int posMayor) {
+        E content = arreglo[posnodo];
+        arreglo[posnodo] = arreglo[posMayor];
+        arreglo[posMayor] = content;
+    }
+    
+    public void makeHeap(){
+        int valor = (this.effectiveSize/2) -1;
+        for(int i = valor ; i >= 0 ; i--){
+            ajustar(i);
         }
     }
-
-    public void swap(int posRoot, E eleRoot, E mayorEle) {
-        this.elements[posRoot] = eleRoot;
-        this.elements[this.getParent(posRoot)] = mayorEle;
+    
+    //desencolar
+    public E desencolar(){
+        if(!this.isEmpty()){
+            E[] newarreglo = (E[]) new Object[effectiveSize-1];
+            E value = this.arreglo[0];
+            effectiveSize--;
+            // el ultimo indice originalmente ahora es igual al effectiveSize porque ya reste uno
+            intercambiar(0,effectiveSize);
+            for(int i = 0 ; i< newarreglo.length ; i++){
+                newarreglo[i] = this.arreglo[i];
+            }
+            this.arreglo = newarreglo;
+            ajustar(0);
+            return value;
+        }   
+        return null;
+    }
+    // revisar
+    public void encolar(E value){
+        if(value != null){
+            if(effectiveSize+ 1 > MAX){
+                addCapacity();
+            }            
+            effectiveSize ++ ; 
+            this.arreglo[effectiveSize-1] = value;
+            int i_value = effectiveSize-1;
+            while(comp.compare(this.arreglo[i_value], this.arreglo[posPadre(i_value)]) > 0 ){
+                ajustar(posPadre(i_value));
+                i_value = posPadre(i_value); 
+            }
+        }
     }
 
     @Override
-    public String toString() {
-        StringBuilder cadena = new StringBuilder();
-        cadena.append("[");
-        for (int i = 0; i <= this.effectiveSize - 1; i++) {
-            if (i == this.effectiveSize - 1) {
-                cadena.append(this.elements[i]);
-            } else {
-                cadena.append(this.elements[i]);
-                cadena.append(",");
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<E>() {
+            int cursor = 0;
+
+            @Override
+            public boolean hasNext() {
+                return cursor < effectiveSize;
             }
+
+            @Override
+            public E next() {
+                E element = arreglo[cursor];
+                cursor++;
+                return element;
+            }
+        };
+        return it;
+    }    
+
+    private void addCapacity() {
+        MAX *= 2;
+        E[] arreglonew = (E[]) new Object[MAX];
+        for(int i = 0 ; i<this.arreglo.length ; i++){
+            arreglonew[i] = this.arreglo[i];
         }
-        cadena.append("]");
-        return cadena.toString();
+        this.arreglo = arreglonew; 
     }
+    
+    public E getLast(){
+        return arreglo[effectiveSize-1];
+    }
+
+    
 }
